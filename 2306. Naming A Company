@@ -1,0 +1,31 @@
+class Solution:
+    #Beats 80% of solutions in speed
+    def distinctNames(self, ideas: List[str]) -> int:
+        #Brute for is O(n^2), need to do better
+        #Observations
+            #Don't compare two words with same first letter
+            #Don't need to compare multiple words with same first letter to a word
+            #Group sets by first letter
+            #Can only create valid names with unique suffix
+            #Achieves O(n * 26^2)
+        #Create a hashmap with keys of first letter with words stored in hashset
+        wordMap = collections.defaultdict(set)
+        for w in ideas:
+            wordMap[w[0]].add(w[1:])
+
+        letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        res = 0
+        for i in range(len(letters)):
+            for j in range(i,len(letters)):
+                char1 = letters[i]
+                char2 = letters[j]
+                if char1 == char2:
+                    continue
+                intersect = 0
+                for w in wordMap[char1]:
+                    if w in wordMap[char2]:
+                        intersect += 1
+                distinct1 = len(wordMap[char1]) - intersect
+                distinct2 = len(wordMap[char2]) - intersect
+                res += 2 * distinct1 * distinct2
+        return res

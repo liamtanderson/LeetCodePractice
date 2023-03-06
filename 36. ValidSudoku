@@ -1,0 +1,28 @@
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        rowCount = [{} for i in range(9)]
+        squareCount = [{} for i in range(9)]
+        colCount = [{} for i in range(9)]
+        i=0
+        while(i < 81):
+            #Handle row
+            row = int(i/9)
+            col = i%9
+            square = (int(col/3)) + (3*int(row/3))
+            #print("Index " + str(i) + " is in row: " + str(row) + " col: " + str(col) + " square: " + str(square))
+            n = board[row][col]
+            if(n != "."):
+                #Check Row
+                rowCount[row][n] = 1 + rowCount[row].get(n, 0)
+                if(rowCount[row][n] > 1):
+                    return False
+                #Check Col
+                colCount[col][n] = 1 + colCount[col].get(n, 0)
+                if(colCount[col][n] > 1):
+                    return False
+                #Check Square
+                squareCount[square][n] = 1 + squareCount[square].get(n, 0)
+                if(squareCount[square][n] > 1):
+                    return False
+            i = i+1
+        return True
